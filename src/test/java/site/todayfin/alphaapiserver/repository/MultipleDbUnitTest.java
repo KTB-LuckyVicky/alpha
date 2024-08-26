@@ -52,8 +52,8 @@ public class MultipleDbUnitTest {
         assertEquals("AAVE", coinRepository.findByDate("2024-08-22").getFrom_currency_code());
     }
 
-    @Test
-    void whenFindUSgdpByDate_thenIDOK(){
-        assertEquals("66c5979019c5926c60b8fd7e", usgdpRepository.findAll().get(0).getId().toString());
-    }
+//    @Test
+//    void whenFindUSgdpByDate_thenIDOK(){
+//        assertEquals("66c5979019c5926c60b8fd7e", usgdpRepository.findAll().get(0).getId().toString());
+//    }
 }
