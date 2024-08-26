@@ -6,5 +6,4 @@ import site.todayfin.alphaapiserver.model.Stock;
 
 @Repository
 public interface StockRepository extends MongoRepository<Stock,String > {
-    Stock findByDate(String date);
 }

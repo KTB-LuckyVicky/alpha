@@ -6,5 +6,4 @@ import site.todayfin.alphaapiserver.model.Coin;
 
 @Repository
 public interface CoinRepository extends MongoRepository<Coin,String> {
-    Coin findByDate(String date);
 }

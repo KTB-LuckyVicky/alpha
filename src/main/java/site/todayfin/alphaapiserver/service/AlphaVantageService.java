@@ -8,11 +8,11 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import site.todayfin.alphaapiserver.model.ExchangeRates;
-import site.todayfin.alphaapiserver.model.MarketMovers;
-import site.todayfin.alphaapiserver.model.Stock;
-import site.todayfin.alphaapiserver.model.USgdp;
+import site.todayfin.alphaapiserver.model.*;
 import site.todayfin.alphaapiserver.repository.alphavantage.ExchangeRatesRepository;
 import site.todayfin.alphaapiserver.repository.alphavantage.MarketMoversRepository;
 import site.todayfin.alphaapiserver.repository.alphavantage.USgdpRepository;
@@ -20,6 +20,7 @@ import site.todayfin.alphaapiserver.storage.DateStorage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -35,6 +36,10 @@ public class AlphaVantageService {
     @Autowired
     @Qualifier("stockMongoDBFactory")
     MongoDatabaseFactory stockMongoDBFactory;
+    @Autowired
+    @Qualifier("coinMongoTemplate")
+    MongoTemplate coinMongoTemplate;
+
     private Gson gson = new Gson();
 
     public String getMarketMovers(){
@@ -123,5 +128,31 @@ public class AlphaVantageService {
 
         sb.append("]");
         return sb.toString();
+    }
+
+    public String getCoins(){
+        String date = dateStorage.getDate();
+        Set<String> collectionNames = coinMongoTemplate.getCollectionNames();
+        List<Coin> coinList = new ArrayList<>();
+        for(String collectionName : collectionNames){
+            Query query = new Query();
+            query.addCriteria(Criteria.where("date").is("2024-08-26"));
+
+            List<Document> documents = coinMongoTemplate.find(query, Document.class, collectionName);
+            Document document = documents.get(0);
+
+            if (document != null){
+                Coin coin = new Coin();
+                coin.setName(document.getString("from_currency_code"));
+                coin.setRate(document.getDouble("exchange_rate_krw"));
+                coin.setLast_refreshed(document.getString("last_refreshed"));
+                coin.setBid(document.getDouble("bid_price_krw"));
+                coin.setAsk(document.getDouble("ask_price_krw"));
+
+                coinList.add(coin);
+            }
+        }
+
+        return gson.toJson(coinList);
     }
 }
