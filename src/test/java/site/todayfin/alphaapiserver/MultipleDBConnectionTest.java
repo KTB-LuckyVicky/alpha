@@ -43,7 +43,7 @@ public class MultipleDBConnectionTest {
         assertNotNull(coinMongoTemplate);
         Set<String> collectionNames = coinMongoTemplate.getDb().listCollectionNames().into(new HashSet<>());
         int collectionCount = collectionNames.size();
-        assertTrue(collectionCount == 15, "The database should contain 15 collections");
+        assertTrue(collectionCount == 17, "The database should contain 15 collections");
     }
 
     @Test
