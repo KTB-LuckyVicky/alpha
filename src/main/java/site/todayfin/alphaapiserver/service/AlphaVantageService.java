@@ -2,8 +2,10 @@ package site.todayfin.alphaapiserver.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import site.todayfin.alphaapiserver.model.ExchangeRates;
 import site.todayfin.alphaapiserver.model.MarketMovers;
 import site.todayfin.alphaapiserver.model.USgdp;
+import site.todayfin.alphaapiserver.repository.alphavantage.ExchangeRatesRepository;
 import site.todayfin.alphaapiserver.repository.alphavantage.MarketMoversRepository;
 import site.todayfin.alphaapiserver.repository.alphavantage.USgdpRepository;
 import site.todayfin.alphaapiserver.storage.DateStorage;
@@ -17,6 +19,8 @@ public class AlphaVantageService {
     private MarketMoversRepository marketMoversRepository;
     @Autowired
     private USgdpRepository usgdpRepository;
+    @Autowired
+    private ExchangeRatesRepository exchangeRatesRepository;
 
     public String getMarketMovers(){
         String date = dateStorage.getDate();
@@ -43,5 +47,16 @@ public class AlphaVantageService {
                 usgdp.getInterval(),
                 usgdp.getUnit(),
                 usgdp.getData());
+    }
+
+    public String getExchangeRates(){
+        String date = dateStorage.getDate();
+        ExchangeRates exchangeRates = exchangeRatesRepository.findByDate(date);
+        return formatExchangeRatesToJson(exchangeRates);
+    }
+    private String formatExchangeRatesToJson(ExchangeRates exchangeRates){
+        if (exchangeRates ==null) return "{}";
+
+        return String.format("{[%s]}",exchangeRates.getRates());
     }
 }

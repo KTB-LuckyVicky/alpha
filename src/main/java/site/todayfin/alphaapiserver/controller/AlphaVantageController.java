@@ -27,6 +27,12 @@ public class AlphaVantageController {
         return alphaVantageService.getUSGDP();
     }
 
+    @ResponseBody
+    @GetMapping("exchange-rates")
+    public String exchangeRates(){
+        return alphaVantageService.getExchangeRates();
+    }
+
 
 
 }
