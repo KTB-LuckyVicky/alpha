@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Document(collection = "stock_AAPL")
+@Document
 @Data
 public class Stock {
     @MongoId
@@ -14,5 +14,5 @@ public class Stock {
     private String name;
     private String last_refreshed;
     private String interval;
-    private String stock_data;
+    private String data;
 }

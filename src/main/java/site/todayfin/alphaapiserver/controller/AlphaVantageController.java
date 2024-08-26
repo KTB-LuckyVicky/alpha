@@ -33,6 +33,12 @@ public class AlphaVantageController {
         return alphaVantageService.getExchangeRates();
     }
 
+    @ResponseBody
+    @GetMapping("stocks")
+    public String stocks(){
+        return alphaVantageService.getStocks();
+    }
+
 
 
 }
