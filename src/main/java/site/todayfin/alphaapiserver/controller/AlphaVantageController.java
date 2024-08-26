@@ -15,12 +15,18 @@ public class AlphaVantageController {
     @Autowired
     private AlphaVantageService alphaVantageService;
 
-
     @ResponseBody
     @GetMapping("top-gainers-losers")
     public String topGainersLosers() {
         return alphaVantageService.getMarketMovers();
     }
+
+    @ResponseBody
+    @GetMapping("real-gdps")
+    public String realGdps(){
+        return alphaVantageService.getUSGDP();
+    }
+
 
 
 }

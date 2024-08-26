@@ -11,6 +11,7 @@ public class USgdp {
     @MongoId
     private ObjectId id;
 
+    private String name;
     private String date;
     private String interval;
     private String unit;
