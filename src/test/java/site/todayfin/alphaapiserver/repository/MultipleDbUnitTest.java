@@ -1,9 +1,10 @@
-package site.todayfin.alphaapiserver;
+package site.todayfin.alphaapiserver.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import site.todayfin.alphaapiserver.AlphaApiServerApplication;
 import site.todayfin.alphaapiserver.repository.alphavantage.ExchangeRatesRepository;
 import site.todayfin.alphaapiserver.repository.alphavantage.MarketMoversRepository;
 import site.todayfin.alphaapiserver.repository.alphavantage.USgdpRepository;
