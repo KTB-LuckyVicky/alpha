@@ -1,6 +1,8 @@
 package site.todayfin.alphaapiserver.service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -94,8 +96,19 @@ public class AlphaVantageService {
                     stock.setName(document.getString("name"));
                     stock.setLast_refreshed(document.getString("last_refreshed"));
                     stock.setInterval(document.getString("interval"));
+                    // stock_data의 Double value -> String value
                     List<Document> stockData = document.getList("stock_data", Document.class);
-                    stock.setData(gson.toJson(stockData));
+                    JsonArray stockDataArray = new JsonArray();
+                    for(Document doc : stockData){
+                        JsonObject stockDataObject = new JsonObject();
+                        stockDataObject.addProperty("date",doc.getString("date"));
+                        stockDataObject.addProperty("open",String.valueOf(doc.getDouble("open")));
+                        stockDataObject.addProperty("high",String.valueOf(doc.getDouble("high")));
+                        stockDataObject.addProperty("low",String.valueOf(doc.getDouble("low")));
+                        stockDataObject.addProperty("close",String.valueOf(doc.getDouble("close")));
+                        stockDataArray.add(stockDataObject);
+                    }
+                    stock.setData(gson.toJson(stockDataArray));
 
                     stocks.add(stock);
                 }
@@ -142,10 +155,10 @@ public class AlphaVantageService {
             if (document != null){
                 Coin coin = new Coin();
                 coin.setName(document.getString("from_currency_code"));
-                coin.setRate(document.getDouble("exchange_rate_krw"));
+                coin.setRate(String.valueOf(document.getDouble("exchange_rate_krw")));
                 coin.setLast_refreshed(document.getString("last_refreshed"));
-                coin.setBid(document.getDouble("bid_price_krw"));
-                coin.setAsk(document.getDouble("ask_price_krw"));
+                coin.setBid(String.valueOf(document.getDouble("bid_price_krw")));
+                coin.setAsk(String.valueOf(document.getDouble("ask_price_krw")));
 
                 coinList.add(coin);
             }
