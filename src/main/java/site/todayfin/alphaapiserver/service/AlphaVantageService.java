@@ -136,7 +136,7 @@ public class AlphaVantageService {
         List<Coin> coinList = new ArrayList<>();
         for(String collectionName : collectionNames){
             Query query = new Query();
-            query.addCriteria(Criteria.where("date").is("2024-08-26"));
+            query.addCriteria(Criteria.where("date").is(date));
 
             List<Document> documents = coinMongoTemplate.find(query, Document.class, collectionName);
             Document document = documents.get(0);
