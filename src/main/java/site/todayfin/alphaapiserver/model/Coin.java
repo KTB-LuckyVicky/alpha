@@ -13,7 +13,7 @@ public class Coin {
 
     private String name;
     private String last_refreshed;
-    private Double rate;
-    private Double bid;
-    private Double ask;
+    private String rate;
+    private String bid;
+    private String ask;
 }
