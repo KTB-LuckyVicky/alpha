@@ -18,9 +18,7 @@ import site.todayfin.alphaapiserver.repository.alphavantage.MarketMoversReposito
 import site.todayfin.alphaapiserver.repository.alphavantage.USgdpRepository;
 import site.todayfin.alphaapiserver.storage.DateStorage;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -77,7 +75,7 @@ public class AlphaVantageService {
     private String formatExchangeRatesToJson(ExchangeRates exchangeRates){
         if (exchangeRates ==null) return "{}";
 
-        return String.format("{[%s]}",exchangeRates.getRates());
+        return String.format("{\"exchange_rates\": [%s]}",exchangeRates.getRates());
     }
 
     public String getStocks(){
@@ -110,7 +108,7 @@ public class AlphaVantageService {
     }
     private String formatStocksToJson(List<Stock> stocks){
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
+        sb.append("{\"stocks\": [");
 
         for (int i = 0; i < stocks.size(); i++) {
             Stock stock = stocks.get(i);
@@ -126,7 +124,7 @@ public class AlphaVantageService {
             }
         }
 
-        sb.append("]");
+        sb.append("]}");
         return sb.toString();
     }
 
@@ -153,6 +151,13 @@ public class AlphaVantageService {
             }
         }
 
-        return gson.toJson(coinList);
+
+        return formatCoinsToJson(coinList);
+    }
+    private String formatCoinsToJson(List<Coin> coinList){
+        Map<String, List<Coin>> coinMap = new HashMap<>();
+        coinMap.put("coins",coinList);
+
+        return gson.toJson(coinMap);
     }
 }
